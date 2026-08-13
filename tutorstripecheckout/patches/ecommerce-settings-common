@@ -1,0 +1,24 @@
+# Stripe Checkout Gate C: disabled by default, fixed API contract, file-only secrets.
+ROOT_URLCONF = "openedx_stripe_checkout.urls"
+INSTALLED_APPS = list(INSTALLED_APPS) + ["openedx_stripe_checkout"]
+PAYMENT_PROCESSORS = list(PAYMENT_PROCESSORS) + [
+    "openedx_stripe_checkout.processor.StripeCheckout",
+]
+for partner_code in PAYMENT_PROCESSOR_CONFIG:
+    PAYMENT_PROCESSOR_CONFIG[partner_code]["stripe-checkout"] = {
+        "mode": "{{ STRIPE_CHECKOUT_MODE }}",
+        "expected_account_id": "{{ STRIPE_CHECKOUT_EXPECTED_ACCOUNT_ID }}",
+        "api_version": "{{ STRIPE_CHECKOUT_API_VERSION }}",
+        "currency": "{{ STRIPE_CHECKOUT_CURRENCY }}",
+        "public_base_url": "{{ STRIPE_CHECKOUT_PUBLIC_BASE_URL }}",
+        "secret_key_file": "/run/secrets/stripe-checkout/secret_key",
+        "webhook_secret_file": "/run/secrets/stripe-checkout/webhook_secret",
+        "secret_uid": {{ STRIPE_CHECKOUT_SECRET_UID }},
+        "secret_gid": {{ STRIPE_CHECKOUT_SECRET_GID }},
+        "callback_max_age": {{ STRIPE_CHECKOUT_CALLBACK_MAX_AGE }},
+        "webhook_tolerance": {{ STRIPE_CHECKOUT_WEBHOOK_TOLERANCE }},
+        "webhook_max_bytes": {{ STRIPE_CHECKOUT_WEBHOOK_MAX_BYTES }},
+        "request_timeout": {{ STRIPE_CHECKOUT_REQUEST_TIMEOUT }},
+        "max_network_retries": {{ STRIPE_CHECKOUT_MAX_NETWORK_RETRIES }},
+        "session_ttl": {{ STRIPE_CHECKOUT_SESSION_TTL }},
+    }

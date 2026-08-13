@@ -1,0 +1,2 @@
+# The backend Waffle switch and this learner-facing flag share one Tutor source.
+MFE_CONFIG["STRIPE_CHECKOUT_ENABLED"] = {% if STRIPE_CHECKOUT_ENABLED %}True{% else %}False{% endif %}

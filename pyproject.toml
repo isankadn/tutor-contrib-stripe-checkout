@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61,<69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tutor-contrib-stripe-checkout"
+version = "0.1.0"
+description = "Tutor 15 integration for Open edX Stripe Checkout"
+requires-python = ">=3.8"
+dependencies = ["tutor>=15,<16"]
+license = {text = "AGPL-3.0-only"}
+
+[project.entry-points."tutor.plugin.v1"]
+stripecheckout = "tutorstripecheckout.plugin"
+
+[tool.setuptools.package-data]
+tutorstripecheckout = ["patches/*", "templates/**/*"]
