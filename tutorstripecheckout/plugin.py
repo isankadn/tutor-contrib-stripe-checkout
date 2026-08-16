@@ -153,7 +153,7 @@ from django.db import transaction
 from ecommerce.core.models import SiteConfiguration
 from waffle.models import Switch
 with transaction.atomic():
-    config = SiteConfiguration.objects.get(site_id=1)
+    config = SiteConfiguration.objects.select_for_update().get(site__domain='{{ ECOMMERCE_HOST }}')
     processors = [name.strip() for name in config.payment_processors.split(',') if name.strip()]
     config.payment_processors = ','.join(dict.fromkeys(processors + ['stripe-checkout']))
     config.full_clean()

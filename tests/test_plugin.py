@@ -152,6 +152,8 @@ def test_gate_c_init_migrates_and_updates_processor_switch_idempotently():
     assert ("ecommerce", task) in ecommerce_registered
     assert task.splitlines()[0] == "./manage.py migrate openedx_stripe_checkout --noinput"
     assert "dict.fromkeys(processors + ['stripe-checkout'])" in task
+    assert "site__domain='{{ ECOMMERCE_HOST }}'" in task
+    assert "site_id=1" not in task
     assert "Switch.objects.update_or_create" in task
     assert "payment_processor_active_" not in task
     assert "PAYMENT_PROCESSOR_SWITCH_PREFIX" in task
