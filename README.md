@@ -162,11 +162,12 @@ STRIPE_CHECKOUT_API_VERSION=2026-02-25.clover
 STRIPE_CHECKOUT_CURRENCY=USD
 ```
 
-The plugin pins the Payment MFE to the reviewed Stripe integration:
+The plugin pins the Payment MFE to the reviewed repository and immutable source
+tag. These build inputs are intentionally fixed by this plugin release:
 
 ```text
-STRIPE_CHECKOUT_PAYMENT_MFE_REPOSITORY=https://github.com/isankadn/frontend-app-payment
-STRIPE_CHECKOUT_PAYMENT_MFE_VERSION=stripe-checkout-tutor15-v0.1.0
+Repository: https://github.com/isankadn/frontend-app-payment
+Version: stripe-checkout-tutor15-v0.1.0
 ```
 
 Build the production MFE image from that immutable tag:

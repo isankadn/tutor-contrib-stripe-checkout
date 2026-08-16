@@ -12,6 +12,8 @@ _SECRET_KEY_CONTAINER_PATH = "/run/secrets/stripe-checkout/secret_key"
 _WEBHOOK_SECRET_CONTAINER_PATH = "/run/secrets/stripe-checkout/webhook_secret"
 _ECOMMERCE_LOOPBACK_BIND = '"127.0.0.1:8130:8130"'
 _ECOMMERCE_REMOTE_BIND = '"0.0.0.0:8130:8130"'
+_PAYMENT_MFE_REPOSITORY = "https://github.com/isankadn/frontend-app-payment"
+_PAYMENT_MFE_VERSION = "stripe-checkout-tutor15-v0.1.0"
 
 _CONFIG_DEFAULTS = {
     "STRIPE_CHECKOUT_ENABLED": False,
@@ -32,8 +34,6 @@ _CONFIG_DEFAULTS = {
     "STRIPE_CHECKOUT_SESSION_TTL": 1800,
     "STRIPE_CHECKOUT_ECOMMERCE_BASE_IMAGE": "docker.io/overhangio/openedx-ecommerce:15.0.2",
     "STRIPE_CHECKOUT_WORKER_BASE_IMAGE": "docker.io/overhangio/openedx-ecommerce-worker:15.0.2",
-    "STRIPE_CHECKOUT_PAYMENT_MFE_REPOSITORY": "https://github.com/isankadn/frontend-app-payment",
-    "STRIPE_CHECKOUT_PAYMENT_MFE_VERSION": "stripe-checkout-tutor15-v0.1.0",
 }
 
 hooks.Filters.CONFIG_DEFAULTS.add_items(list(_CONFIG_DEFAULTS.items()))
@@ -51,8 +51,8 @@ hooks.Filters.CONFIG_OVERRIDES.add_items(
             "ECOMMERCE_PAYMENT_MFE_APP",
             {
                 "name": "payment",
-                "repository": "{{ STRIPE_CHECKOUT_PAYMENT_MFE_REPOSITORY }}",
-                "version": "{{ STRIPE_CHECKOUT_PAYMENT_MFE_VERSION }}",
+                "repository": _PAYMENT_MFE_REPOSITORY,
+                "version": _PAYMENT_MFE_VERSION,
                 "port": 1998,
             },
         ),

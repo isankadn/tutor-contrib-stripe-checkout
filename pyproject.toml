@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tutor-contrib-stripe-checkout"
-version = "0.1.0"
+version = "0.1.1"
 description = "Tutor 15 integration for Open edX Stripe Checkout"
 requires-python = ">=3.8"
 dependencies = ["tutor>=15,<16"]

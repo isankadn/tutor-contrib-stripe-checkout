@@ -21,18 +21,15 @@ def test_gate_c_defaults_are_safe_and_version_pinned():
     assert defaults["STRIPE_CHECKOUT_WEBHOOK_SECRET_HOST_PATH"].endswith("/webhook_secret")
     assert overrides["ECOMMERCE_DOCKER_IMAGE"] == "openedx-ecommerce-stripe-checkout:0.1.0"
     assert overrides["ECOMMERCE_WORKER_DOCKER_IMAGE"] == "openedx-ecommerce-worker-stripe-checkout:0.1.0"
-    assert defaults["STRIPE_CHECKOUT_PAYMENT_MFE_REPOSITORY"] == (
-        "https://github.com/isankadn/frontend-app-payment"
-    )
-    assert defaults["STRIPE_CHECKOUT_PAYMENT_MFE_VERSION"] == (
-        "stripe-checkout-tutor15-v0.1.0"
-    )
+    assert "STRIPE_CHECKOUT_PAYMENT_MFE_REPOSITORY" not in defaults
+    assert "STRIPE_CHECKOUT_PAYMENT_MFE_VERSION" not in defaults
     assert overrides["ECOMMERCE_PAYMENT_MFE_APP"] == {
         "name": "payment",
-        "repository": "{{ STRIPE_CHECKOUT_PAYMENT_MFE_REPOSITORY }}",
-        "version": "{{ STRIPE_CHECKOUT_PAYMENT_MFE_VERSION }}",
+        "repository": "https://github.com/isankadn/frontend-app-payment",
+        "version": "stripe-checkout-tutor15-v0.1.0",
         "port": 1998,
     }
+    assert "{{" not in repr(overrides["ECOMMERCE_PAYMENT_MFE_APP"])
     assert "sk_" not in repr(defaults)
     assert "whsec_" not in repr(defaults)
     assert plugin._SECRET_KEY_CONTAINER_PATH.startswith("/run/secrets/")
