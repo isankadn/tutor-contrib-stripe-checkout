@@ -163,11 +163,11 @@ def test_gate_c_init_migrates_and_updates_processor_switch_idempotently():
 def test_settings_and_mfe_patches_share_one_enablement_source():
     plugin = plugin_module()
     settings_patch = (plugin._PACKAGE_ROOT / "patches" / "ecommerce-settings-common").read_text()
-    mfe_patch = (plugin._PACKAGE_ROOT / "patches" / "mfe-lms-common-settings").read_text()
+    mfe_patch = (plugin._PACKAGE_ROOT / "patches" / "openedx-lms-common-settings").read_text()
     registered = dict(hooks.Filters.ENV_PATCHES.apply([]))
 
     assert registered["ecommerce-settings-common"] == settings_patch
-    assert registered["mfe-lms-common-settings"] == mfe_patch
+    assert registered["openedx-lms-common-settings"] == mfe_patch
     assert 'ROOT_URLCONF = "openedx_stripe_checkout.urls"' in settings_patch
     assert '"openedx_stripe_checkout.processor.StripeCheckout"' in settings_patch
     assert '"stripe-checkout"' in settings_patch
