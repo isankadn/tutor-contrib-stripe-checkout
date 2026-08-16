@@ -138,6 +138,43 @@ def test_secret_mounts_are_skipped_until_both_files_exist(tmp_path, monkeypatch)
     ]
 
 
+def test_secret_mounts_use_tutor_default_root_without_environment(
+    tmp_path, monkeypatch
+):
+    plugin = plugin_module()
+    key_path = tmp_path / "secret_key"
+    webhook_path = tmp_path / "webhook_secret"
+    key_path.touch()
+    webhook_path.touch()
+    config = {
+        "STRIPE_CHECKOUT_SECRET_KEY_HOST_PATH": str(key_path),
+        "STRIPE_CHECKOUT_WEBHOOK_SECRET_HOST_PATH": str(webhook_path),
+    }
+    loaded_roots = []
+    monkeypatch.delenv("TUTOR_ROOT", raising=False)
+    monkeypatch.setattr(
+        plugin.appdirs,
+        "user_data_dir",
+        lambda *, appname: str(tmp_path),
+    )
+    monkeypatch.setattr(
+        plugin.tutor_config,
+        "load_full",
+        lambda root: loaded_roots.append(root) or config,
+    )
+
+    mounted = plugin._mount_secret_files_if_present({"services": {}})
+
+    assert loaded_roots == [str(tmp_path)]
+    assert [
+        volume["target"]
+        for volume in mounted["services"]["ecommerce"]["volumes"]
+    ] == [
+        "/run/secrets/stripe-checkout/secret_key",
+        "/run/secrets/stripe-checkout/webhook_secret",
+    ]
+
+
 def test_gate_c_init_migrates_and_updates_processor_switch_idempotently():
     plugin = plugin_module()
     task = plugin._GATE_C_INIT_TASK

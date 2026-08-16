@@ -3,8 +3,10 @@
 import os
 from pathlib import Path
 
+import appdirs
 from tutor import config as tutor_config
 from tutor import hooks
+from tutor.__about__ import __app__
 
 _PACKAGE_ROOT = Path(__file__).resolve().parent
 _TEMPLATE_ROOT = _PACKAGE_ROOT / "templates"
@@ -127,9 +129,9 @@ def _mount_secret_files(compose, key_host, webhook_host):
 
 def _mount_secret_files_if_present(compose):
     """Mount configured secrets only when both host files exist."""
-    tutor_root = os.environ.get("TUTOR_ROOT")
-    if not tutor_root:
-        return compose
+    tutor_root = os.environ.get("TUTOR_ROOT") or appdirs.user_data_dir(
+        appname=__app__
+    )
     config = tutor_config.load_full(tutor_root)
     key_host = Path(
         os.path.expandvars(str(config["STRIPE_CHECKOUT_SECRET_KEY_HOST_PATH"]))
