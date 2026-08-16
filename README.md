@@ -175,14 +175,14 @@ promotes prebuilt artifacts must replace them with immutable digest references:
 
 ```bash
 tutor config save \
-  --set STRIPE_CHECKOUT_ECOMMERCE_DOCKER_IMAGE=REGISTRY/ecommerce@sha256:DIGEST \
-  --set STRIPE_CHECKOUT_WORKER_DOCKER_IMAGE=REGISTRY/ecommerce-worker@sha256:DIGEST \
+  --set ECOMMERCE_DOCKER_IMAGE=REGISTRY/ecommerce@sha256:DIGEST \
+  --set ECOMMERCE_WORKER_DOCKER_IMAGE=REGISTRY/ecommerce-worker@sha256:DIGEST \
   --set MFE_DOCKER_IMAGE=REGISTRY/mfe@sha256:DIGEST \
   --set STRIPE_CHECKOUT_ENABLED=false
 ```
 
-The first two settings feed Tutor's standard `ECOMMERCE_DOCKER_IMAGE` and
-`ECOMMERCE_WORKER_DOCKER_IMAGE` values. Keep the processor disabled until the
+The first two settings are Tutor Ecommerce's standard web and worker image
+values. Keep the processor disabled until the
 digest-pinned web, worker, and MFE artifacts, migrations, mounts, PayPal flow,
 and rollback path have been verified on the target.
 

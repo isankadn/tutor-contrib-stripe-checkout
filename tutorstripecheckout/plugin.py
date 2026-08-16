@@ -34,8 +34,6 @@ _CONFIG_DEFAULTS = {
     "STRIPE_CHECKOUT_SESSION_TTL": 1800,
     "STRIPE_CHECKOUT_ECOMMERCE_BASE_IMAGE": "docker.io/overhangio/openedx-ecommerce:15.0.2",
     "STRIPE_CHECKOUT_WORKER_BASE_IMAGE": "docker.io/overhangio/openedx-ecommerce-worker:15.0.2",
-    "STRIPE_CHECKOUT_ECOMMERCE_DOCKER_IMAGE": "openedx-ecommerce-stripe-checkout:0.1.0",
-    "STRIPE_CHECKOUT_WORKER_DOCKER_IMAGE": "openedx-ecommerce-worker-stripe-checkout:0.1.0",
 }
 
 hooks.Filters.CONFIG_DEFAULTS.add_items(list(_CONFIG_DEFAULTS.items()))
@@ -43,11 +41,11 @@ hooks.Filters.CONFIG_OVERRIDES.add_items(
     [
         (
             "ECOMMERCE_DOCKER_IMAGE",
-            "{{ STRIPE_CHECKOUT_ECOMMERCE_DOCKER_IMAGE }}",
+            "openedx-ecommerce-stripe-checkout:0.1.3",
         ),
         (
             "ECOMMERCE_WORKER_DOCKER_IMAGE",
-            "{{ STRIPE_CHECKOUT_WORKER_DOCKER_IMAGE }}",
+            "openedx-ecommerce-worker-stripe-checkout:0.1.3",
         ),
         (
             "ECOMMERCE_PAYMENT_MFE_APP",

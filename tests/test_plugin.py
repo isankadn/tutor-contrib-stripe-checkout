@@ -19,12 +19,10 @@ def test_gate_c_defaults_are_safe_and_version_pinned():
     assert defaults["STRIPE_CHECKOUT_CURRENCY"] == "USD"
     assert defaults["STRIPE_CHECKOUT_SECRET_KEY_HOST_PATH"].endswith("/secret_key")
     assert defaults["STRIPE_CHECKOUT_WEBHOOK_SECRET_HOST_PATH"].endswith("/webhook_secret")
-    assert defaults["STRIPE_CHECKOUT_ECOMMERCE_DOCKER_IMAGE"] == "openedx-ecommerce-stripe-checkout:0.1.0"
-    assert defaults["STRIPE_CHECKOUT_WORKER_DOCKER_IMAGE"] == (
-        "openedx-ecommerce-worker-stripe-checkout:0.1.0"
+    assert overrides["ECOMMERCE_DOCKER_IMAGE"] == "openedx-ecommerce-stripe-checkout:0.1.3"
+    assert overrides["ECOMMERCE_WORKER_DOCKER_IMAGE"] == (
+        "openedx-ecommerce-worker-stripe-checkout:0.1.3"
     )
-    assert overrides["ECOMMERCE_DOCKER_IMAGE"] == "{{ STRIPE_CHECKOUT_ECOMMERCE_DOCKER_IMAGE }}"
-    assert overrides["ECOMMERCE_WORKER_DOCKER_IMAGE"] == "{{ STRIPE_CHECKOUT_WORKER_DOCKER_IMAGE }}"
     assert "STRIPE_CHECKOUT_PAYMENT_MFE_REPOSITORY" not in defaults
     assert "STRIPE_CHECKOUT_PAYMENT_MFE_VERSION" not in defaults
     assert overrides["ECOMMERCE_PAYMENT_MFE_APP"] == {
@@ -189,6 +187,10 @@ def test_derived_dockerfiles_install_same_versioned_wheel():
     for content in contents:
         assert "openedx_stripe_checkout-0.1.0-py3-none-any.whl" in content
         assert "pip install --no-cache-dir" in content
+        assert "apt-get upgrade --yes" in content
+        assert "linux-libc-dev" in content
+        assert "apt-get purge --yes" in content
+        assert content.rstrip().endswith("USER 1000")
         assert ".patch" not in content
     assert Path(files[0]).name == Path(files[1]).name == "Dockerfile"
 
